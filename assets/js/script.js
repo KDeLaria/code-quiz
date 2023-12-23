@@ -50,14 +50,14 @@ function shuffleQuestions () {
   var possibleAnswerSize = quiz[0].possibleAnswer.length;
   var questionIndex = Math.floor(Math.random() * quizSize);
   var possibleAnswerIndex = Math.floor(Math.random() * possibleAnswerSize);
-  var newQuiz;
+  var newQuiz = quiz;
 
   // Assigns questions to a random spot in the array
   for (var i = 0; i < quiz.length; i++){
     newQuiz = quiz[questionIndex];
     // Assigns possible answers to a random spot in the array
     for (var x = 0; x < quiz.length; x++){
-      newQuiz[i].possibleAnswer[x] = quiz[questionIndex].possibleAnswer[possibleAnswerIndex];
+      //newQuiz[i].possibleAnswer[x] = quiz[questionIndex].possibleAnswer[possibleAnswerIndex];
       possibleAnswerIndex = possibleAnswerSize % possibleAnswerIndex++;
     }
     questionIndex = quizSize % questionIndex++;
@@ -69,7 +69,7 @@ function shuffleQuestions () {
 function startQuizTimer () {
   clearQuizBox();
   shuffleQuestions();
-  askQuestions();
+  askQuestion();
 
     var timeInterval = setInterval(function () {
   
