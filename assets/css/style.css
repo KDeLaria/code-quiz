@@ -25,10 +25,30 @@ h2 {
     padding-bottom: 10px;
 }
 
-#start-button{
+.quiz-button {
+    padding: 5px;
+    align-self: flex-start;
+    margin: 5px;
+}
+
+#reset-button {
+    display: none;
+    align-self: flex-start;
+}
+
+#start-button {
+    align-self: center;
+}
+
+#save-button {
+    display: none;
+    justify-self: flex-end;
+    align-self: flex-end;
+}
+
+.control-button{
     border-radius: 5px;
     width: fit-content;
-    align-self: center;
     padding: 5px;
     margin: 10px;
 }
