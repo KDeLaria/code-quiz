@@ -1,13 +1,10 @@
 var heading = document.querySelector("h2");
 var info = document.querySelector("p");
+var quizDiv = document.querySelector("#quiz");
 var quizTimer = document.querySelector("#countdown");
 var startButton = document.querySelector("#start-button");
 var resetButton = document.querySelector("#reset-button");
 var saveButton = document.querySelector("#save-button");
-var quizButton1 = document.querySelector("#quiz-button1");
-var quizButton2 = document.querySelector("#quiz-button2");
-var quizButton3 = document.querySelector("#quiz-button3");
-var quizButton4 = document.querySelector("#quiz-button4");
 
 var timer = 30;
 var score = 0;
@@ -17,7 +14,7 @@ var question = ["How do you display data in the console in Javascript?",
   "How do you access the first h3 element in an HTML document using Javascript?",
   "How do you store an object on a local machine in Javascript?"];
 var answer = ["console.log()", "var myArray[];", "document.querySelector('h3');",
-"localStorage.setItem('myObject', JSON.stringify(myObject));"];
+  "localStorage.setItem('myObject', JSON.stringify(myObject));"];
 var possibleAnswer = [["document.innerHTML()", "document.textContent", "console.log()", "console.write()",
   "localStorage.setItem('myObject', JSON.stringify(myObject));"],
 ["var myArray = ['item1', 'item2', 'item3', 'item4'];",
@@ -26,30 +23,43 @@ var possibleAnswer = [["document.innerHTML()", "document.textContent", "console.
   "document.innerHTML('h3');", "document.getElementById('h3');"],
 ["localStorage.setItem('myObject', JSON.stringify(myObject));", "localStorage.setItem('myObject', myObject);",
   "localStorage.setItem('myObject', myObject);", "localStorage.setItem(JSON.stringify(myObject), 'myObject');"]];
-  var numOfQuestions = question.length;
-  var numOfPossibleAnswers = possibleAnswer[0].length - 1; // " - 1" Fixes length overflow issue
-  var quizIndex = 0;
+var numOfQuestions = question.length;
+var numOfPossibleAnswers = possibleAnswer[0].length - 1; // " - 1" Fixes length overflow issue
+var quizIndex = 0;
 
 startButton.addEventListener("click", startQuiz);
 
-quizButton1.addEventListener("click", answerQuestion);
-quizButton2.addEventListener("click", answerQuestion);
-quizButton3.addEventListener("click", answerQuestion);
-quizButton4.addEventListener("click", answerQuestion);
 
-
-function answerQuestion () {
-  alert (this);
+// Checks the clicked answer against the correct answer
+// if the answer is incremented by 1, but if the answer is wrong
+// 
+function answerQuestion() {
+  var clickedAnswer = this.textContent; // Reads the clicked on text
+  if (clickedAnswer === answer[quizIndex]) {
+    score++;
+    console.log("ClickedAnswer: " + clickedAnswer + "\nquizIndex: " + quizIndex + "\nscore: " + score);
+  }
+  else {
+    timer = timer - 5; // 5 seconds are subtracted from the timer 
+  }
+  quizIndex++;
+  quizDiv.innerHTML = "";  // Clears the possible answers
+  askQuestion(); // ask next question
 }
 
-//
+// Displays the next quiz question with possible
+// answers
 function askQuestion() {
   if (quizIndex < numOfQuestions) {
     info.textContent = question[quizIndex];
 
+    // Creates a button and listener for each possible answer
     for (var i = 0; i < numOfPossibleAnswers; i++) {
-      var ans = document.querySelector("#quiz-button" + i);
-      ans.textContent = (i + 1) + ". " + possibleAnswer[quizIndex][i];
+      var ans = document.createElement("button");
+      ans.textContent = possibleAnswer[quizIndex][i];
+      ans.setAttribute("class", "quiz-button")
+      document.querySelector("#quiz").appendChild(ans);
+      ans.addEventListener("click", answerQuestion);
     }
   }
   else {
@@ -65,7 +75,7 @@ function shuffleQuestions() {
     var tempVar = question[i];
     question[i] = question[questionIndex];
     question[questionIndex] = tempVar;
-    
+
     tempVar = answer[i];
     answer[i] = answer[questionIndex];
     answer[questionIndex] = tempVar;
@@ -99,6 +109,7 @@ function startQuizTimer() {
       heading.innerHTML = "Time is up!";
       info.textContent = "Your score is " + score + ".";
       saveButton.setAttribute("style", "display: flex;");
+      saveButton.addEventListener("click", saveHiScore);
     }
 
     timer--;
@@ -131,6 +142,9 @@ function startQuiz() {
 function clearQuizBox() {
   info.textContent = "";
   startButton.textContent = "";
+  quizDiv.innerHTML = "";
   startButton.setAttribute("style", "display: none;");
+  resetButton.setAttribute("style", "display: none;");
+  saveButton.setAttribute("style", "display: none;");
   score = 0;
 }
