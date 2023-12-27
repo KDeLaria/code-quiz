@@ -31,22 +31,22 @@ h2 {
     margin: 5px;
 }
 
-#reset-button {
+#reset-button, #view-scores, #back-button, #save-button {
     display: none;
-    align-self: flex-start;
 }
 
-#start-button {
-    align-self: center;
+.score-item {
+    text-align: right;
 }
 
-#save-button {
-    display: none;
-    justify-self: flex-end;
-    align-self: flex-end;
+#control-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .control-button{
+    justify-self: flex-end;
     border-radius: 5px;
     width: fit-content;
     padding: 5px;

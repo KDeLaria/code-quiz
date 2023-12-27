@@ -4,9 +4,13 @@ var quizDiv = document.querySelector("#quiz");
 var quizTimer = document.querySelector("#countdown");
 var startButton = document.querySelector("#start-button");
 var resetButton = document.querySelector("#reset-button");
+var scoresButton = document.querySelector("#view-scores");
 var saveButton = document.querySelector("#save-button");
+var backButton = document.querySelector("#back-button");
 
-var timer = 30;
+var quizTime = 60
+var countdownTimer = 0;
+var timer = quizTime;
 var score = 0;
 var quizIndex = 0;
 var question = ["How do you display data in the console in Javascript?",
@@ -32,9 +36,10 @@ startButton.addEventListener("click", startQuiz);
 
 // Checks the clicked answer against the correct answer
 // if the answer is incremented by 1, but if the answer is wrong
-// 
-function answerQuestion() {
-  var clickedAnswer = this.textContent; // Reads the clicked on text
+// 5 seconds are subtracted from the quiz timer
+function answerQuestion(event) {
+  event.stopPropagation();
+  var clickedAnswer = event.target.textContent;
   if (clickedAnswer === answer[quizIndex]) {
     score++;
     console.log("ClickedAnswer: " + clickedAnswer + "\nquizIndex: " + quizIndex + "\nscore: " + score);
@@ -43,7 +48,7 @@ function answerQuestion() {
     timer = timer - 5; // 5 seconds are subtracted from the timer 
   }
   quizIndex++;
-  quizDiv.innerHTML = "";  // Clears the possible answers
+  clearQuizBox();
   askQuestion(); // ask next question
 }
 
@@ -57,14 +62,95 @@ function askQuestion() {
     for (var i = 0; i < numOfPossibleAnswers; i++) {
       var ans = document.createElement("button");
       ans.textContent = possibleAnswer[quizIndex][i];
-      ans.setAttribute("class", "quiz-button")
-      document.querySelector("#quiz").appendChild(ans);
+      ans.setAttribute("class", "quiz-button");
+      quizDiv.appendChild(ans);
       ans.addEventListener("click", answerQuestion);
     }
   }
   else {
     timer = 0;
   }
+}
+
+// Sets up the page back to the begining
+function goBack () {
+  clearQuizBox();
+
+  timer = quizTime;  // Reset timer
+  resetButton.setAttribute("style", "display: none;");
+  backButton.setAttribute("style", "display: none;");
+  scoresButton.setAttribute("style", "display: none;");
+  saveButton.setAttribute("style", "display: none;");
+  startButton.setAttribute("style", "display: flex;");
+  heading.textContent = "Code Quiz";
+  info.textContent = "Press the button to start the timed quiz.";
+  startButton.addEventListener("click", startQuiz);
+}
+
+// Clears all socres saved on the user's machine
+function resetScores () {
+  localStorage.clear();
+  displayScores();
+}
+
+// Diplays all of the scores that are saved on the user's machine
+function displayScores () {
+  clearQuizBox();
+  saveButton.setAttribute("style", "display: none;");
+  heading.textContent = "Scores";
+  scoresButton.setAttribute("style", "display: none;");
+  resetButton.setAttribute("style", "display: flex;");
+  resetButton.addEventListener("click", resetScores);
+  var scores = JSON.parse(localStorage.getItem("hiScore"));
+  if (!(scores === null)) {
+    var list = document.createElement("ul");
+    quizDiv.appendChild(list);
+    for (var i = 0; i < scores.length; i++) {
+      var scoreItem = document.createElement("li");
+      scoreItem.textContent = scores[i].name + " " + scores[i].score;
+      scoreItem.setAttribute("class", "score-item");
+      list.appendChild(scoreItem);
+    }
+  }
+}
+
+// Saves the user's name and score on their machine and adds it 
+// to the previously saved scores
+function saveHiScore(event) {
+  event.preventDefault();
+
+  var nameInput = document.querySelector("#nameInput");
+  if (!(nameInput.value === "")) {
+    var scores = JSON.parse(localStorage.getItem("hiScore"));
+    if (scores === null) {
+      var hiScore = [{
+        name: nameInput.value,
+        score: score
+      }];
+    localStorage.setItem("hiScore", JSON.stringify(hiScore));
+  }
+  else {
+    var hiScore = {
+      name: nameInput.value,
+      score: score
+    };
+    scores.push(hiScore);
+    localStorage.setItem("hiScore", JSON.stringify(scores));
+  }
+    clearQuizBox();
+    heading.textContent = "Your score has been saved!";
+  }
+}
+
+// Displays a form to save the user's name and score
+function displaySave() {
+  saveButton.setAttribute("style", "display: none");
+  heading.textContent = "Enter your name to save your score";
+  quizDiv.innerHTML = "<form id='nameForm' method='POST'><label for='nameInput'>Name: \
+  </label>\<input type='text' placeholder='Name' name='nameInput' id='nameInput'>\
+  <button class='control-button'>Save</button></form>";
+  var nameForm = document.querySelector("#nameForm");
+  nameForm.addEventListener("submit", saveHiScore);
 }
 
 // Randomizes the order of the quiz
@@ -104,23 +190,32 @@ function startQuizTimer() {
 
     quizTimer.textContent = timer;
 
-    if (timer === 0) {
+    if (timer === 0 || timer < 0) {
       clearInterval(timeInterval);
+      clearQuizBox();
       heading.innerHTML = "Time is up!";
       info.textContent = "Your score is " + score + ".";
       saveButton.setAttribute("style", "display: flex;");
-      saveButton.addEventListener("click", saveHiScore);
+      saveButton.addEventListener("click", displaySave);
+      scoresButton.setAttribute("style", "display: flex;");
+      scoresButton.addEventListener("click", displayScores);
+      backButton.setAttribute("style", "display: flex;");
+      backButton.addEventListener("click", goBack);
+      quizTimer.textContent = "";
     }
 
     timer--;
   }, 1000);
-  timer = 30;  // Reset timer
 }
 
 // Starts countdown timer before the quiz starts
 function startQuiz() {
+  startButton.setAttribute("style", "display: none;");
+  resetButton.setAttribute("style", "display: none;");
+  saveButton.setAttribute("style", "display: none;");
   clearQuizBox();
-  var timeLeft = 5;
+  score = 0;
+  var timeLeft = countdownTimer;
   heading.textContent = "Get ready";
 
   var timeInterval = setInterval(function () {
@@ -140,11 +235,7 @@ function startQuiz() {
 
 // Clears the elements in the quiz-box
 function clearQuizBox() {
+  heading.textContent = "";
   info.textContent = "";
-  startButton.textContent = "";
   quizDiv.innerHTML = "";
-  startButton.setAttribute("style", "display: none;");
-  resetButton.setAttribute("style", "display: none;");
-  saveButton.setAttribute("style", "display: none;");
-  score = 0;
 }
