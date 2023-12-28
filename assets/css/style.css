@@ -11,6 +11,11 @@ body {
     height: fit-content;
 }
 
+#quiz {
+    display: flex;
+    flex-direction: column;
+}
+
 #countdown {
     display: flex;
     font-weight: bold;
