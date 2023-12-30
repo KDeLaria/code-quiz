@@ -32,12 +32,19 @@ h2 {
 
 .quiz-button {
     padding: 5px;
+    border-radius: 2px;
+    background-color: midnightblue;
+    color: bisque;
     align-self: flex-start;
     margin: 5px;
 }
 
 #reset-button, #view-scores, #back-button, #save-button {
     display: none;
+}
+
+#back-button {
+    order: 0;
 }
 
 .score-item {

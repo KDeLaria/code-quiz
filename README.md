@@ -1,7 +1,7 @@
 # Code Quiz
 
 ![Code Quiz](./assets/images/Screenshot.png)
-Visit the [Code Quiz](https://kdelaria.github.io/code-quiz/).
+Visit the [Code Quiz](https://kdelaria.github.io/code-quiz/) webpage.
 
 ## Description
 
@@ -23,6 +23,10 @@ Click on the "Start Quiz" button to start the quiz. Select the corret answers to
 
 *"Fisher Yates Method""JavaScript Tryit Editor" W3Schools, *[w3schools.com/js/tryit.asp?filename=tryjs_array_sort_random2](https://www.w3schools.com/js/tryit.asp?filename=tryjs_array_sort_random2)*. Accessed 24 Dec. 2023.*
 Accessed 13 Dec, 2023.*
+
+*"JavaScript String Methods" W3Schools, *[w3schools.com/js/js_string_methods.asp](https://www.w3schools.com/js/js_string_methods.asp)*. Accessed 30 Dec. 2023.*
+
+*"JavaScript DOM CSS" W3Schools, *[w3schools.com/js/js_htmldom_css.asp](https://www.w3schools.com/js/js_htmldom_css.asp)*. Accessed 30 Dec. 2023.*
 
 ## License
 N/A

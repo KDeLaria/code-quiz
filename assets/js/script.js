@@ -8,7 +8,7 @@ var scoresButton = document.querySelector("#view-scores");
 var saveButton = document.querySelector("#save-button");
 var backButton = document.querySelector("#back-button");
 
-var quizTime = 60
+var quizTime = 60;
 var countdownTimer = 0;
 var timer = quizTime;
 var score = 0;
@@ -16,19 +16,26 @@ var quizIndex = 0;
 var question = ["How do you display data in the console in Javascript?",
   "Which is NOT an array in Javascript?",
   "How do you access the first h3 element in an HTML document using Javascript?",
-  "How do you store an object on a local machine in Javascript?"];
+  "How do you store an object on a local machine in Javascript?",
+  "How do you remove all whitespace characters surrounding a string in Javascript?",
+  "Which is not a way to change a selected element's background color to green in Javascript?",
+  "How do you prevent bubbling on click events in Javascript?"];
 var answer = ["console.log()", "var myArray[];", "document.querySelector('h3');",
-  "localStorage.setItem('myObject', JSON.stringify(myObject));"];
-var possibleAnswer = [["document.innerHTML()", "document.textContent", "console.log()", "console.write()",
-  "localStorage.setItem('myObject', JSON.stringify(myObject));"],
+  "localStorage.setItem('myObject', JSON.stringify(myObject));", "myString.trim();",
+  "mySelectedElement.style.background-color = 'green';", "event.stopPropagation();"];
+var possibleAnswer = [["document.innerHTML()", "document.textContent", "console.log()", "console.write()"],
 ["var myArray = ['item1', 'item2', 'item3', 'item4'];",
   "var myArray[];", "var myArray = [1, 2, 3, 4];", "myArray[2] = 'item2';"],
 ["document.querySelector('h3');", "document.body.children[0];",
   "document.innerHTML('h3');", "document.getElementById('h3');"],
 ["localStorage.setItem('myObject', JSON.stringify(myObject));", "localStorage.setItem('myObject', myObject);",
-  "localStorage.setItem('myObject', myObject);", "localStorage.setItem(JSON.stringify(myObject), 'myObject');"]];
+  "localStorage.setItem('myObject', myObject);", "localStorage.setItem(JSON.stringify(myObject), 'myObject');"],
+["myString.split(' ')", "myString.removeWhitespaceChars();", "myString.trim();", "myString.replaceAll(' ');"],
+["mySelectedElement.setAttribute('style', 'background-color: green;');",
+  "mySelectedElement.style.backgroundColor = 'green';", "mySelectedElement.style.background-color = 'green';",
+  "document.getElementById(mySelectedElementID).setAttribute('style', 'background-color: green;');"],
+["event.stopPropagation();", "event.preventDefault();", "preventPropagation();", "event.stopDefault();"]];
 var numOfQuestions = question.length;
-var numOfPossibleAnswers = possibleAnswer[0].length - 1; // " - 1" Fixes length overflow issue
 var quizIndex = 0;
 
 startButton.addEventListener("click", startQuiz);
@@ -42,7 +49,6 @@ function answerQuestion(event) {
   var clickedAnswer = event.target.textContent;
   if (clickedAnswer === answer[quizIndex]) {
     score++;
-    console.log("ClickedAnswer: " + clickedAnswer + "\nquizIndex: " + quizIndex + "\nscore: " + score);
   }
   else {
     timer = timer - 5; // 5 seconds are subtracted from the timer 
@@ -59,7 +65,7 @@ function askQuestion() {
     info.textContent = question[quizIndex];
 
     // Creates a button and listener for each possible answer
-    for (var i = 0; i < numOfPossibleAnswers; i++) {
+    for (var i = 0; i < possibleAnswer[quizIndex].length; i++) {
       var ans = document.createElement("button");
       ans.textContent = possibleAnswer[quizIndex][i];
       ans.setAttribute("class", "quiz-button");
@@ -73,7 +79,7 @@ function askQuestion() {
 }
 
 // Sets up the page back to the begining
-function goBack () {
+function goBack() {
   clearQuizBox();
 
   timer = quizTime;  // Reset timer
@@ -88,13 +94,13 @@ function goBack () {
 }
 
 // Clears all socres saved on the user's machine
-function resetScores () {
+function resetScores() {
   localStorage.clear();
   displayScores();
 }
 
 // Diplays all of the scores that are saved on the user's machine
-function displayScores () {
+function displayScores() {
   clearQuizBox();
   saveButton.setAttribute("style", "display: none;");
   heading.textContent = "Scores";
@@ -127,16 +133,16 @@ function saveHiScore(event) {
         name: nameInput.value,
         score: score
       }];
-    localStorage.setItem("hiScore", JSON.stringify(hiScore));
-  }
-  else {
-    var hiScore = {
-      name: nameInput.value,
-      score: score
-    };
-    scores.push(hiScore);
-    localStorage.setItem("hiScore", JSON.stringify(scores));
-  }
+      localStorage.setItem("hiScore", JSON.stringify(hiScore));
+    }
+    else {
+      var hiScore = {
+        name: nameInput.value,
+        score: score
+      };
+      scores.push(hiScore);
+      localStorage.setItem("hiScore", JSON.stringify(scores));
+    }
     clearQuizBox();
     heading.textContent = "Your score has been saved!";
   }
@@ -170,7 +176,7 @@ function shuffleQuestions() {
     possibleAnswer[i] = possibleAnswer[questionIndex];
     possibleAnswer[questionIndex] = tempVar;
 
-    for (var x = numOfPossibleAnswers - 1; x > 0; x--) {
+    for (var x = possibleAnswer[i].length - 1; x > 0; x--) {
       var possibleAnswerIndex = Math.floor(Math.random() * (x + 1));
       tempVar = possibleAnswer[questionIndex][x];
       possibleAnswer[questionIndex][x] = possibleAnswer[questionIndex][possibleAnswerIndex];
@@ -190,7 +196,7 @@ function startQuizTimer() {
 
     quizTimer.textContent = timer;
 
-    if (timer === 0 || timer < 0) {
+    if (timer === 0 || timer < 0 || quizIndex >= numOfQuestions) {
       clearInterval(timeInterval);
       clearQuizBox();
       heading.innerHTML = "Time is up!";
