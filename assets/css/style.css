@@ -40,6 +40,13 @@ h2 {
     background-color: violet;
 }
 
+#result {
+    margin-top: 20px;
+    display: none;
+    border-top: 1px gray;
+    color: gray;
+}
+
 .quiz-button {
     padding: 5px;
     border-radius: 2px;

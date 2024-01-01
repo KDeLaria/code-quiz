@@ -1,6 +1,7 @@
 var heading = document.querySelector("h2");
 var info = document.querySelector("p");
 var quizDiv = document.querySelector("#quiz");
+var resultDiv = document.querySelector("#result");
 var quizTimer = document.querySelector("#countdown");
 var startButton = document.querySelector("#start-button");
 var resetButton = document.querySelector("#reset-button");
@@ -8,7 +9,7 @@ var scoresButton = document.querySelector("#view-scores");
 var saveButton = document.querySelector("#save-button");
 var backButton = document.querySelector("#back-button");
 
-var quizTime = 60;
+var quizTime = 30;
 var countdownTimer = 0;
 var timer = quizTime;
 var score = 0;
@@ -49,9 +50,21 @@ function answerQuestion(event) {
   var clickedAnswer = event.target.textContent;
   if (clickedAnswer === answer[quizIndex]) {
     score++;
+    resultDiv.textContent = "Correct";
+    resultDiv.setAttribute("style", "display: flex;");
+    setTimeout(function(){
+      resultDiv.textContent = "";
+      resultDiv.setAttribute("style", "display: none;");}, 1000
+    );
   }
   else {
-    timer = timer - 5; // 5 seconds are subtracted from the timer 
+    timer = timer - 5; // 5 seconds are subtracted from the timer
+    resultDiv.textContent = "Wrong";
+    resultDiv.setAttribute("style", "display: flex;");
+    setTimeout(function(){
+      resultDiv.textContent = "";
+      resultDiv.setAttribute("style", "display: none;");}, 1000
+    );
   }
   quizIndex++;
   clearQuizBox();
