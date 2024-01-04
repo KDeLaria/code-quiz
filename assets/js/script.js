@@ -211,6 +211,7 @@ function startQuizTimer() {
 
     if (timer === 0 || timer < 0 || quizIndex >= numOfQuestions) {
       clearInterval(timeInterval);
+      resultDiv.setAttribute("style", "display: none;");
       clearQuizBox();
       heading.innerHTML = "Time is up!";
       info.textContent = "Your score is " + score + ".";

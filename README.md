@@ -1,6 +1,6 @@
 # Code Quiz
 
-![Code Quiz](./assets/images/Screenshot.png)
+![Code Quiz](./assets/images/screenshot.png)
 Visit the [Code Quiz](https://kdelaria.github.io/code-quiz/) webpage.
 
 ## Description
