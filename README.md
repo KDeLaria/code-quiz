@@ -1,6 +1,6 @@
 # Code Quiz
 
-![Code Quiz](./assets/images/screenshot.png)
+[<img src="./assets/images/screenshot.png">](https://kdelaria.github.io/code-quiz/)
 Visit the [Code Quiz](https://kdelaria.github.io/code-quiz/) webpage.
 
 ## Description
@@ -13,7 +13,9 @@ N/A
 
 ## Usage
 
-Click on the "Start Quiz" button to start the quiz. Select the correct answers to add to your score. Save your score by clicking the "Save" button, and filling out your name in the input box.  Then click "Save" again to add your score to the list of scores.  To view the list of scores click the "View Scores" button.  To go back to the page to start a new quiz click the "Back" button.
+Click on the **Start Quiz** button to start the quiz. Select the correct answers to add to your score. Save your score by clicking the **Save** button, and filling out your name in the input box.  Then click **Save** again to add your score to the list of scores.  To view the list of scores click the **View Scores** button.  To go back to the page to start a new quiz click the **Back** button.
+
+- *All questions and possible answers are randomized each time the quiz starts.*
 
 ## Credits
 
